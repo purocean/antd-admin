@@ -15,7 +15,6 @@ class Component extends React.Component {
   };
 
   handleMenuClick(e) {
-    console.log('click ', e);
     if (e.key === 'logout') {
       Http.fetch(Config.urls.userLogout, {method: 'POST'})
       .then(() => {
@@ -28,7 +27,7 @@ class Component extends React.Component {
     return (
       <div className="layout-main">
         <Navbar>
-          <Menu mode="horizontal" theme="dark" onClick={e => this.handleMenuClick(e)} defaultSelectedKeys={['/']}>
+          <Menu mode="horizontal" theme="dark" onClick={e => this.handleMenuClick(e)} defaultSelectedKeys={[this.props.navKey]}>
             <Menu.Item key="/"><Link to="/"> Home </Link></Menu.Item>
             <Menu.Item key="/user"><Link to="/user"> User </Link></Menu.Item>
             <Menu.Item key="/rbac"><Link to="/rbac"> RBAC </Link></Menu.Item>
@@ -46,7 +45,7 @@ class Component extends React.Component {
 }
 
 Component.defaultProps = {
-  navKey: '/home',
+  navKey: '/',
   sideBar: false
 };
 

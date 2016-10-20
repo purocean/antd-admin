@@ -76,10 +76,10 @@ let can = function (item, callback) {
       }
     })
     .catch(error => {
-      console.log('There has been a problem with your fetch operation: ' + error.message)
-    })
+      console.log('There has been a problem with your fetch operation: ' + error.message);
+    });
   } else {
-    return checkRole(item) || checkPermission(item)
+    return checkRole(item) || checkPermission(item);
   }
 }
 

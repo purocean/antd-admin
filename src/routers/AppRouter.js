@@ -11,7 +11,7 @@ import Login from '../pages/Login';
 
 const requireAuth = (prevState, nextState, replace, callback) => {
   NProgress.start();
-  const allowList = ['/404', '/403', '/500', '/login', '/'];
+  const allowList = ['/404', '/403', '/500', '/login', '/', '/user'];
   const path = nextState.location.pathname;
   if (allowList.indexOf(path) > -1) {
     callback();
