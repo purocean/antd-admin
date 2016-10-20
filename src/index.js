@@ -1,3 +1,4 @@
+import 'nprogress/nprogress.css'
 import 'antd/dist/antd.css'
 import 'styles/App.css'
 

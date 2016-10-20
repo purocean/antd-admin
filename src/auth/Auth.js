@@ -1,5 +1,5 @@
-import Config from 'config'
-import Storage from '../utils/Storage'
+import Config from 'config';
+import Storage from '../utils/Storage';
 import Http from '../utils/Http';
 
 let setUser = function (user) {

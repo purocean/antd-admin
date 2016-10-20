@@ -6,10 +6,6 @@
   width: 100%;
 }
 
-.navbar .right li.ant-menu-item {
-  float: right;
-}
-
 .navbar li.ant-menu-item {
   height: 150%;
 }
@@ -21,4 +17,6 @@
 .navbar .brand {
   color: #fefefe;
   font-size: 18px;
+  line-height: 230%;
+  margin-right: 1em;
 }
