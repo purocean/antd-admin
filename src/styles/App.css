@@ -1,5 +1,5 @@
 /* Base Application Styles */
 
 .pull-right {
-  float: right;
+  float: right !important;
 }

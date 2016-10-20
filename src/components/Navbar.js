@@ -1,5 +1,6 @@
 import '../styles/Navbar.css';
 
+import Config from 'config';
 import React from 'react';
 import { Menu, Row, Col } from 'antd';
 
@@ -14,11 +15,8 @@ class Component extends React.Component {
             </Menu.Item>
           </Menu>
           </Col>
-          <Col span={10}>
-            {this.props.mainMenu}
-          </Col>
-          <Col span={6} className="right">
-            {this.props.rightMenu}
+          <Col span={16}>
+            {this.props.children}
           </Col>
           <Col span={4}></Col>
         </Row>
@@ -27,9 +25,7 @@ class Component extends React.Component {
 }
 
 Component.defaultProps = {
-  brand: 'Antd Admin',
-  mainMenu: null,
-  rightMenu: null
+  brand: Config.siteName
 };
 
 

@@ -2,7 +2,6 @@ import '../styles/Login.css';
 
 import Config from 'config';
 import React from 'react';
-// import { browserHistory } from 'react-router';
 import {Menu, Icon, Form, Input, Checkbox, Card, Button} from 'antd';
 
 import Auth from '../auth/Auth';
@@ -22,16 +21,7 @@ class Component extends React.Component {
       isSubmit: false
     };
 
-    this.mainMenu = null;
-    this.rightMenu = (
-      <Menu mode="horizontal"theme="dark" defaultSelectedKeys={['login']}>
-        <Menu.Item key="login">
-          <Icon type="user" />Login
-        </Menu.Item>
-      </Menu>
-    );
-
-    Auth.setAccessToken('');
+    Auth.setUser('');
   }
 
   onSubmit(e) {
@@ -46,7 +36,7 @@ class Component extends React.Component {
       if (response.ok) {
           response.json().then(data => {
           if (data.status === 'ok') {
-            Auth.setAccessToken(data.access_token);
+            Auth.setUser(data.user);
             let next = this.props.location.query.redirect;
             this.context.router.push(next ? next : '/');
           } else {
@@ -69,7 +59,13 @@ class Component extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="login">
-        <Navbar brand="Antd Admin" mainMenu={this.mainMenu} rightMenu={this.rightMenu} />
+        <Navbar>
+          <Menu  mode="horizontal" theme="dark" defaultSelectedKeys={['login']}>
+            <Menu.Item className="pull-right" key="login">
+              <Icon type="user" />Login
+            </Menu.Item>
+          </Menu>
+        </Navbar>
         <Card className="main">
           <h1 className="title">Login</h1>
           <Form vertical onSubmit={e => this.onSubmit(e)}>

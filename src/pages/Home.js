@@ -1,16 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router';
 
-import yeomanImage from '../images/yeoman.png';
+import Main from '../layouts/Main';
 
 class Component extends React.Component {
   render() {
     return (
-      <div className="index">
-        <img src={yeomanImage} alt="Yeoman Generator" />
-        <h4>home</h4>
-        <div className="notice">Please edit <code><Link to="login">hgjkl;</Link></code> to get started!</div>
-      </div>
+      <Main className="home" navKey="/home" sideBar={false}>
+        <h1 style={{textAlign: 'center', marginTop: '100px'}}>HOME</h1>
+      </Main>
     );
   }
 }

@@ -2,12 +2,17 @@ import Config from 'config'
 import Storage from '../utils/Storage'
 import Http from '../utils/Http';
 
-let getAccessToken = function () {
-  return Storage.get('auth_access_token')
+let setUser = function (user) {
+  return Storage.set('auth_user', user);
 }
 
-let setAccessToken = function (token) {
-  return Storage.set('auth_access_token', token)
+let getUser = function () {
+  let user = Storage.get('auth_user', {});
+  return (user && user.expires > Date.parse(new Date()) / 1000) ? user : {};
+}
+
+let getAccessToken = function () {
+  return getUser().access_token;
 }
 
 let isLogin = function () {
@@ -79,8 +84,9 @@ let can = function (item, callback) {
 }
 
 export default {
+  setUser,
+  getUser,
   getAccessToken,
-  setAccessToken,
   getPermissions,
   setPermissions,
   getRoles,
