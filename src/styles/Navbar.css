@@ -1,0 +1,24 @@
+.navbar {
+  background-color: #404040;
+}
+
+.navbar ul.ant-menu {
+  width: 100%;
+}
+
+.navbar .right li.ant-menu-item {
+  float: right;
+}
+
+.navbar li.ant-menu-item {
+  height: 150%;
+}
+
+.navbar li.ant-menu-item.ant-menu-item-selected  {
+  background: #303030;
+}
+
+.navbar .brand {
+  color: #fefefe;
+  font-size: 18px;
+}
