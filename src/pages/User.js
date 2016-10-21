@@ -47,12 +47,6 @@ class Component extends React.Component {
   }
 
   handleTableChange (pagination, filters, sorter) {
-    const pager = this.state.pagination;
-    pager.current = pagination.current;
-    this.setState({
-      pagination: pager
-    });
-
     this.fetch({
       page: pagination.current,
       sortField: sorter.field,
@@ -66,6 +60,24 @@ class Component extends React.Component {
     this.setState({ selectedRowKeys });
   }
 
+  delete () {
+    this.setState({ loading: true });
+    Http.fetch(Config.urls.users + '/' + this.state.selectedRowKeys.toString(), {method: 'DELETE', headers: {Authorization: 'Bearer ' + Auth.getAccessToken()}})
+    .then(response => {
+      if (!response.ok) {
+        console.log('Network response was not ok.')
+      }
+    })
+    .catch(error => {
+      console.log('There has been a problem with your fetch operation: ' + error.message)
+    })
+    .then(() => {
+      this.fetch({
+        page: this.state.pagination.current,
+      })
+    });
+  }
+
   fetch(params = {page: 1}) {
     this.setState({ loading: true });
     Http.fetch(Config.urls.users + '?&page=' + params.page, {headers: {Authorization: 'Bearer ' + Auth.getAccessToken()}})
@@ -73,10 +85,11 @@ class Component extends React.Component {
       if (response.ok) {
         response.json().then(data => {
           const pagination = this.state.pagination;
-          // Read total count from server
-          // pagination.total = data.totalCount;
+
+          pagination.current = parseInt(response.headers.get('X-Pagination-Current-Page'));
           pagination.pageSize = parseInt(response.headers.get('X-Pagination-Per-Page'));
           pagination.total = parseInt(response.headers.get('X-Pagination-Total-Count'));
+
           this.setState({
             loading: false,
             data: data,
@@ -105,7 +118,7 @@ class Component extends React.Component {
     return (
       <Main className="user" navKey="/user" sideBar={false}>
         <Card>
-          <Button type="primary" onClick={this.start}
+          <Button type="primary" onClick={e => this.delete(e)}
             disabled={this.state.selectedRowKeys.length <= 0}
           >Delete</Button>
           <Table
