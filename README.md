@@ -7,7 +7,7 @@ Work with https://github.com/purocean/yii2-tpl (PHP & Yii 2 framework)
 
 ## TODO
 - [x] Login
-- [ ] User
+- [x] User
 - [ ] Error
 - [ ] RBAC
 

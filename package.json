@@ -5,7 +5,7 @@
   "author": "Yang <purocean@gmail.com>",
   "scripts": {
     "clean": "rimraf dist/*",
-    "copy": "copyfiles -f ./src/index.html ./src/favicon.ico ./dist",
+    "copy": "copyfiles -f ./src/favicon.ico ./dist",
     "dist": "npm run copy & webpack --env=dist",
     "lint": "eslint ./src",
     "posttest": "npm run lint",
@@ -33,6 +33,7 @@
     "eslint": "^3.0.0",
     "eslint-loader": "^1.0.0",
     "eslint-plugin-react": "^6.0.0",
+    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "glob": "^7.0.0",
     "isparta-instrumenter-loader": "^1.0.0",
@@ -60,6 +61,7 @@
   "dependencies": {
     "antd": "^2.1.0",
     "core-js": "^2.0.0",
+    "html-webpack-plugin": "^2.24.0",
     "normalize.css": "^4.0.0",
     "nprogress": "^0.2.0",
     "react": "^15.0.0",

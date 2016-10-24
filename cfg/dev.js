@@ -7,6 +7,7 @@ let defaultSettings = require('./defaults');
 
 // Add needed plugins here
 let BowerWebpackPlugin = require('bower-webpack-plugin');
+let HtmlWebpackPlugin = require('html-webpack-plugin');
 
 let config = Object.assign({}, baseConfig, {
   entry: [
@@ -14,6 +15,10 @@ let config = Object.assign({}, baseConfig, {
     'webpack/hot/only-dev-server',
     './src/index'
   ],
+  output: {
+    path: path.join(__dirname, '/../dist/assets'),
+    filename: 'js/[name].js',
+  },
   cache: true,
   devtool: 'eval-source-map',
   plugins: [
@@ -21,6 +26,10 @@ let config = Object.assign({}, baseConfig, {
     new webpack.NoErrorsPlugin(),
     new BowerWebpackPlugin({
       searchResolveModulesDirectories: false
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, '../src/index.html'),
+      inject: true,
     })
   ],
   module: defaultSettings.getDefaultModules()
