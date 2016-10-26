@@ -31,26 +31,16 @@ class Component extends React.Component {
     Http.fetch(Config.urls.userLogin, {
       method: 'post',
       body: this.props.form.getFieldsValue()
-    })
-    .then(response => {
-      if (response.ok) {
-          response.json().then(data => {
-          if (data.status === 'ok') {
-            Auth.setUser(data.data);
-            let next = this.props.location.query.redirect;
-            this.context.router.push(next ? next : '/');
-          } else {
-            this.props.form.setFieldsValue({password: ''});
-            message.error(data.errors.password.toString());
-            console.log(data);
-          }
-        })
-      } else {
-        console.log('Network response was not ok.')
-      }
-    })
-    .catch(error => {
-      console.log('There has been a problem with your fetch operation: ' + error.message)
+    }, data => {
+        if (data.status === 'ok') {
+          Auth.setUser(data.data);
+          let next = this.props.location.query.redirect;
+          this.context.router.push(next ? next : '/');
+        } else {
+          this.props.form.setFieldsValue({password: ''});
+          message.error(data.errors.password.toString());
+          console.log(data);
+        }
     })
     .then(() => this.setState({isSubmit: false}));
   }

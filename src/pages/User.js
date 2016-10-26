@@ -80,33 +80,21 @@ class Component extends React.Component {
 
   fetch(params = {page: 1}) {
     this.setState({ loading: true });
-    Http.fetch(Config.urls.users + '?&page=' + params.page, {headers: {Authorization: 'Bearer ' + Auth.getAccessToken()}})
-    .then(response => {
-      if (response.ok) {
-        response.json().then(data => {
-          const pagination = this.state.pagination;
+    Http.fetch(Config.urls.users + '?&page=' + params.page, {}, (data, response) => {
+      const pagination = this.state.pagination;
 
-          pagination.current = parseInt(response.headers.get('X-Pagination-Current-Page'));
-          pagination.pageSize = parseInt(response.headers.get('X-Pagination-Per-Page'));
-          pagination.total = parseInt(response.headers.get('X-Pagination-Total-Count'));
+      pagination.current = parseInt(response.headers.get('X-Pagination-Current-Page'));
+      pagination.pageSize = parseInt(response.headers.get('X-Pagination-Per-Page'));
+      pagination.total = parseInt(response.headers.get('X-Pagination-Total-Count'));
 
-          this.setState({
-            loading: false,
-            data: data,
-            pagination
-          });
-        })
-      } else {
-        console.log('Network response was not ok.')
-      }
-    })
-    .catch(error => {
-      console.log('There has been a problem with your fetch operation: ' + error.message)
+      this.setState({
+        loading: false,
+        data: data,
+        pagination
+      });
     })
     .then(() => {
-      this.setState({
-        loading: false
-      })
+      this.setState({loading: false});
     });
   }
 

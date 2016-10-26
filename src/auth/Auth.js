@@ -63,20 +63,10 @@ let checkPermission = function (permission) {
  */
 let can = function (item, callback) {
   if (callback) {
-    Http.fetch(Config.urls.userItems, {headers: {Authorization: 'Bearer ' + getAccessToken()}})
-    .then(response => {
-      if (response.ok) {
-        response.json().then(data => {
-          setRoles(Object.keys(data.roles))
-          setPermissions(Object.keys(data.permissions))
-          callback(checkRole(item) || checkPermission(item))
-        })
-      } else {
-        console.log('Network response was not ok.')
-      }
-    })
-    .catch(error => {
-      console.log('There has been a problem with your fetch operation: ' + error.message);
+    Http.fetch(Config.urls.userItems, {}, data => {
+        setRoles(Object.keys(data.roles))
+        setPermissions(Object.keys(data.permissions))
+        callback(checkRole(item) || checkPermission(item))
     });
   } else {
     return checkRole(item) || checkPermission(item);
