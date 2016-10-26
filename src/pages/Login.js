@@ -2,7 +2,7 @@ import '../styles/Login.css';
 
 import Config from 'config';
 import React from 'react';
-import {Menu, Icon, Form, Input, Checkbox, Card, Button} from 'antd';
+import {Menu, Icon, Form, Input, Checkbox, Card, Button, message} from 'antd';
 
 import Auth from '../auth/Auth';
 import Http from '../utils/Http';
@@ -36,14 +36,14 @@ class Component extends React.Component {
       if (response.ok) {
           response.json().then(data => {
           if (data.status === 'ok') {
-            Auth.setUser(data.user);
+            Auth.setUser(data.data);
             let next = this.props.location.query.redirect;
             this.context.router.push(next ? next : '/');
           } else {
+            this.props.form.setFieldsValue({password: ''});
+            message.error(data.errors.password.toString());
             console.log(data);
           }
-
-          console.log(response)
         })
       } else {
         console.log('Network response was not ok.')
@@ -78,7 +78,7 @@ class Component extends React.Component {
                 <Input type="text" required />
               )}
             </Form.Item>
-            <Form.Item label="Passeord">
+            <Form.Item label="Password">
               {getFieldDecorator('password', {
                 rules: [
                   { required: true, whitespace: true, message: 'Please enter your password' }
