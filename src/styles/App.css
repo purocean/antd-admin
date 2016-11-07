@@ -16,3 +16,7 @@
 #nprogress .peg {
   box-shadow: 0 0 10px #fff, 0 0 5px #fff;
 }
+
+.ant-btn-group .ant-btn-loading:not(:first-child) .anticon {
+  margin-left: 0;
+}

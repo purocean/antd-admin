@@ -1,3 +1,4 @@
+import Config from 'config';
 import NProgress from 'nprogress';
 import React from 'react';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
@@ -11,9 +12,8 @@ import Login from '../pages/Login';
 
 const requireAuth = (prevState, nextState, replace, callback) => {
   NProgress.start();
-  const allowList = ['/404', '/403', '/500', '/login', '/', '/user'];
   const path = nextState.location.pathname;
-  if (allowList.indexOf(path) > -1) {
+  if (Auth.checkPermission(Config.allowRoutes, path)) {
     callback();
     NProgress.done();
     return;
@@ -21,7 +21,11 @@ const requireAuth = (prevState, nextState, replace, callback) => {
 
   if (Auth.isLogin()) {
     Auth.can(path, allow => {
-      if (allow) {
+      if (allow === 401) {
+        replace({pathname: '/login', query: {redirect: path}});
+        callback();
+        NProgress.done();
+      } else if(allow) {
         callback();
         NProgress.done();
       } else {
@@ -58,4 +62,3 @@ AppRouter.defaultProps = {
 };
 
 export default AppRouter;
-

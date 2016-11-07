@@ -40,8 +40,7 @@ let checkRole = function (role) {
   return roles.indexOf(role) > -1
 }
 
-let checkPermission = function (permission) {
-  let permissions = getPermissions()
+let checkPermission = function (permissions, permission) {
   if (permissions.indexOf(permission) > -1) {
     return true
   }
@@ -62,14 +61,17 @@ let checkPermission = function (permission) {
  * Check from server if callback provided.
  */
 let can = function (item, callback) {
+  const permissions = getPermissions();
   if (callback) {
     Http.fetch(Config.urls.userItems, {}, data => {
         setRoles(Object.keys(data.roles))
         setPermissions(Object.keys(data.permissions))
-        callback(checkRole(item) || checkPermission(item))
+        callback(checkRole(item) || checkPermission(permissions, item))
+    }, error => {
+        callback(error.status);
     });
   } else {
-    return checkRole(item) || checkPermission(item);
+    return checkRole(item) || checkPermission(permissions, item);
   }
 }
 

@@ -8,5 +8,6 @@ export default {
     userLogin: 'http://192.168.1.108:8080/users/login',
     userLogout: 'http://192.168.1.108:8080/users/logout',
     userItems: 'http://192.168.1.108:8080/users/items'
-  }
+  },
+  allowRoutes: ['/error', '/login', '/user'],
 }
