@@ -15,45 +15,45 @@ let getAccessToken = function () {
 }
 
 let isLogin = function () {
-  return !!getAccessToken()
+  return !!getAccessToken();
 }
 
 let getPermissions = function () {
-  return Storage.get('auth_permissions', [])
+  return Storage.get('auth_permissions', []);
 }
 
 let setPermissions = function (permissions) {
-  return Storage.set('auth_permissions', permissions)
+  return Storage.set('auth_permissions', permissions);
 }
 
 let getRoles = function () {
-  return Storage.get('auth_roles', [])
+  return Storage.get('auth_roles', []);
 }
 
 let setRoles = function (roles) {
-  return Storage.set('auth_roles', roles)
+  return Storage.set('auth_roles', roles);
 }
 
 let checkRole = function (role) {
-  let roles = getRoles()
-  return roles.indexOf(role) > -1
+  let roles = getRoles();
+  return roles.indexOf(role) > -1;
 }
 
 let checkPermission = function (permissions, permission) {
-  if (permissions.indexOf(permission) > -1 || permissions.indexOf(permission + '/*')) {
-    return true
+  if (permissions.indexOf(permission) > -1 || permissions.indexOf(permission + '/*') > -1) {
+    return true;
   }
 
-  let pos = permission.lastIndexOf('/')
+  let pos = permission.lastIndexOf('/');
   while (pos > -1) {
-    pos = permission.lastIndexOf('/')
-    permission = permission.substring(0, pos)
+    pos = permission.lastIndexOf('/');
+    permission = permission.substring(0, pos);
     if (permissions.indexOf(permission + '/*') > -1) {
-      return true
+      return true;
     }
   }
 
-  return false
+  return false;
 }
 
 /**
@@ -63,9 +63,9 @@ let can = function (item, callback) {
   const permissions = getPermissions();
   if (callback) {
     Http.fetch('/users/items', {}, data => {
-        setRoles(Object.keys(data.roles))
-        setPermissions(Object.keys(data.permissions))
-        callback(checkRole(item) || checkPermission(permissions, item))
+        setRoles(Object.keys(data.roles));
+        setPermissions(Object.keys(data.permissions));
+        callback(checkRole(item) || checkPermission(permissions, item));
     }, error => {
         callback(error.status);
     });
@@ -86,4 +86,4 @@ export default {
   checkRole,
   isLogin,
   can
-}
+};
