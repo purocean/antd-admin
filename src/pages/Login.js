@@ -34,7 +34,7 @@ class Component extends React.Component {
         if (data.status === 'ok') {
           Auth.setUser(data.data);
           let next = this.props.location.query.redirect;
-          this.context.router.push(next ? next : '/');
+          this.context.router.replace(next ? next : '/');
         } else {
           this.props.form.setFieldsValue({password: ''});
           message.error(data.errors.password.toString());
