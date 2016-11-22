@@ -1,4 +1,3 @@
-import Config from 'config';
 import Storage from '../utils/Storage';
 import Http from '../utils/Http';
 
@@ -63,7 +62,7 @@ let checkPermission = function (permissions, permission) {
 let can = function (item, callback) {
   const permissions = getPermissions();
   if (callback) {
-    Http.fetch(Config.urls.userItems, {}, data => {
+    Http.fetch('/users/items', {}, data => {
         setRoles(Object.keys(data.roles))
         setPermissions(Object.keys(data.permissions))
         callback(checkRole(item) || checkPermission(permissions, item))

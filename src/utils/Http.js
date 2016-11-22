@@ -1,9 +1,12 @@
 import 'whatwg-fetch';
+import Config from 'config';
 
 import Auth from '../auth/Auth';
 
 export default {
   fetch: (url, params = {}, cbSuccess = (() => {}),  cbError = (() => {}), ...other) => {
+    Config.appEnv !== 'dist' && !url.startsWith('http') && (url = '/api' + url);
+
     params = Object.assign({
       headers: Object.assign({
         'Accept': 'application/json',

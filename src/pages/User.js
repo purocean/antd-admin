@@ -1,4 +1,3 @@
-import Config from 'config';
 import React from 'react';
 import { Card, Button, Table } from 'antd';
 import Auth from '../auth/Auth';
@@ -62,7 +61,7 @@ class Component extends React.Component {
 
   delete () {
     this.setState({ loading: true });
-    Http.fetch(Config.urls.users + '/' + this.state.selectedRowKeys.toString(), {method: 'DELETE', headers: {Authorization: 'Bearer ' + Auth.getAccessToken()}})
+    Http.fetch('/users' + this.state.selectedRowKeys.toString(), {method: 'DELETE', headers: {Authorization: 'Bearer ' + Auth.getAccessToken()}})
     .then(response => {
       if (!response.ok) {
         console.log('Network response was not ok.')
@@ -80,7 +79,7 @@ class Component extends React.Component {
 
   fetch(params = {page: 1}) {
     this.setState({ loading: true });
-    Http.fetch(Config.urls.users + '?&page=' + params.page, {}, (data, response) => {
+    Http.fetch('/users?&page=' + params.page, {}, (data, response) => {
       const pagination = this.state.pagination;
 
       pagination.current = parseInt(response.headers.get('X-Pagination-Current-Page'));

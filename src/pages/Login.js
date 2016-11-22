@@ -1,6 +1,5 @@
 import '../styles/Login.css';
 
-import Config from 'config';
 import React from 'react';
 import {Menu, Icon, Form, Input, Checkbox, Card, Button, message} from 'antd';
 
@@ -28,7 +27,7 @@ class Component extends React.Component {
     e.preventDefault();
     this.setState({isSubmit: true});
 
-    Http.fetch(Config.urls.userLogin, {
+    Http.fetch('/users/login', {
       method: 'post',
       body: this.props.form.getFieldsValue()
     }, data => {

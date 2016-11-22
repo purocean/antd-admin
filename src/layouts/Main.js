@@ -1,6 +1,5 @@
 import '../styles/Main.css';
 
-import Config from 'config';
 import React from 'react';
 import { Link } from 'react-router';
 import { Menu, Icon } from 'antd';
@@ -16,7 +15,7 @@ class Component extends React.Component {
 
   handleMenuClick(e) {
     if (e.key === 'logout') {
-      Http.fetch(Config.urls.userLogout, {method: 'POST'})
+      Http.fetch('/users/logout', {method: 'POST'})
       .then(() => {
         this.context.router.push('/login');
       })

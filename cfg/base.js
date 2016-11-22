@@ -28,7 +28,15 @@ module.exports = {
     port: defaultSettings.port,
     host: defaultSettings.host,
     publicPath: '/',
-    noInfo: false
+    noInfo: false,
+    proxy: {
+      '/api/*': {
+        target: 'http://192.168.1.108:8080',
+        pathRewrite: {
+          '/api' : ''
+        }
+      }
+    }
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
