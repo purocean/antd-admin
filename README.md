@@ -1,7 +1,7 @@
 # Antd Admin
 > A RBAC manager build with React and Antd
 
-Work with https://github.com/purocean/yii2-tpl (PHP & Yii 2 framework)
+Work with https://github.com/purocean/yii2-template (PHP & Yii 2 framework)
 
 *Developing...*
 
