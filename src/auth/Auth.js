@@ -40,7 +40,7 @@ let checkRole = function (role) {
 }
 
 let checkPermission = function (permissions, permission) {
-  if (permissions.indexOf(permission) > -1) {
+  if (permissions.indexOf(permission) > -1 || permissions.indexOf(permission + '/*')) {
     return true
   }
 
