@@ -12,11 +12,14 @@ let HtmlWebpackPlugin = require('html-webpack-plugin');
 let ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 let config = Object.assign({}, baseConfig, {
-  entry: path.join(__dirname, '../src/index'),
+  entry: {
+    index: path.join(__dirname, '../src/index'),
+    app: path.join(__dirname, '../src/app')
+  },
   cache: false,
   devtool: 'sourcemap',
   output: {
-    path: path.join(__dirname, '/../dist/assets'),
+    path: path.join(__dirname, '../dist/assets'),
     filename: 'js/[name].[chunkhash].js',
     chunkFilename: 'js/[id].[chunkhash].js',
     publicPath: defaultSettings.publicPath
@@ -29,6 +32,11 @@ let config = Object.assign({}, baseConfig, {
     new BowerWebpackPlugin({
       searchResolveModulesDirectories: false
     }),
+    new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendors',
+        chunks: ['index', 'app'],
+        minChunks: 2
+    }),
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
@@ -37,6 +45,22 @@ let config = Object.assign({}, baseConfig, {
     new HtmlWebpackPlugin({
       filename: path.resolve(__dirname, '../dist/index.html'),
       template: path.resolve(__dirname, '../src/index.html'),
+      inject: true,
+      chunks: ['vendors', 'index'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+        // more options:
+        // https://github.com/kangax/html-minifier#options-quick-reference
+      },
+      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+      chunksSortMode: 'dependency'
+    }),
+    new HtmlWebpackPlugin({
+      filename: path.resolve(__dirname, '../dist/app.html'),
+      template: path.resolve(__dirname, '../src/app.html'),
+      chunks: ['vendors', 'app'],
       inject: true,
       minify: {
         removeComments: true,

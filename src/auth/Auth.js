@@ -1,45 +1,48 @@
+import NProgress from 'nprogress';
+import Config from 'config';
+
 import Storage from '../utils/Storage';
 import Http from '../utils/Http';
 
-let setUser = function (user) {
+const setUser = function (user) {
   return Storage.set('auth_user', user);
 }
 
-let getUser = function () {
+const getUser = function () {
   let user = Storage.get('auth_user', {});
   return (user && user.expires > Date.parse(new Date()) / 1000) ? user : {};
 }
 
-let getAccessToken = function () {
+const getAccessToken = function () {
   return getUser().access_token;
 }
 
-let isLogin = function () {
+const isLogin = function () {
   return !!getAccessToken();
 }
 
-let getPermissions = function () {
+const getPermissions = function () {
   return Storage.get('auth_permissions', []);
 }
 
-let setPermissions = function (permissions) {
+const setPermissions = function (permissions) {
   return Storage.set('auth_permissions', permissions);
 }
 
-let getRoles = function () {
+const getRoles = function () {
   return Storage.get('auth_roles', []);
 }
 
-let setRoles = function (roles) {
+const setRoles = function (roles) {
   return Storage.set('auth_roles', roles);
 }
 
-let checkRole = function (role) {
+const checkRole = function (role) {
   let roles = getRoles();
   return roles.indexOf(role) > -1;
 }
 
-let checkPermission = function (permissions, permission) {
+const checkPermission = function (permissions, permission) {
   if (permissions.indexOf(permission) > -1 || permissions.indexOf(permission + '/*') > -1) {
     return true;
   }
@@ -59,7 +62,7 @@ let checkPermission = function (permissions, permission) {
 /**
  * Check from server if callback provided.
  */
-let can = function (item, callback) {
+const can = function (item, callback) {
   const permissions = getPermissions();
   if (callback) {
     Http.fetch('/users/items', {}, data => {
@@ -74,7 +77,39 @@ let can = function (item, callback) {
   }
 }
 
+const requireAuth = (prevState, nextState, replace, callback) => {
+  NProgress.start();
+  const path = nextState.location.pathname;
+  if (checkPermission(Config.allowRoutes, path)) {
+    callback();
+    NProgress.done();
+    return;
+  }
+
+  if (isLogin()) {
+    can(path, allow => {
+      if (allow === 401) {
+        replace({pathname: '/login', query: {redirect: path}});
+        callback();
+        NProgress.done();
+      } else if(allow) {
+        callback();
+        NProgress.done();
+      } else {
+        replace({pathname: '/error'});
+        callback();
+        NProgress.done();
+      }
+    })
+  } else {
+    replace({pathname: '/login', query: {redirect: path}});
+    callback();
+    NProgress.done();
+  }
+};
+
 export default {
+  requireAuth,
   setUser,
   getUser,
   getAccessToken,
