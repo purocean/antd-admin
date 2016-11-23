@@ -11,9 +11,16 @@ let HtmlWebpackPlugin = require('html-webpack-plugin');
 
 let config = Object.assign({}, baseConfig, {
   entry: {
-    hot: 'webpack/hot/only-dev-server',
-    index: './src/index',
-    app: './src/app'
+    index: [
+      'webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
+      'webpack/hot/only-dev-server',
+      './src/index',
+    ],
+    app: [
+      'webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
+      'webpack/hot/only-dev-server',
+      './src/app',
+    ],
   },
   output: {
     path: path.join(__dirname, '/../dist/assets'),
@@ -30,13 +37,13 @@ let config = Object.assign({}, baseConfig, {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/index.html'),
       filename: 'index.html',
-      chunks: ['hot', 'index'],
+      chunks: ['index'],
       inject: true,
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/app.html'),
       filename: 'app.html',
-      chunks: ['hot', 'app'],
+      chunks: ['app'],
       inject: true,
     })
   ],
